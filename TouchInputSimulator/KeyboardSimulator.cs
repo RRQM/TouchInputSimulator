@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Threading;
 using TouchInputSimulator.Native;
-
+using static System.Runtime.CompilerServices.RuntimeHelpers;
+#if !NET20
+using System.Threading.Tasks;
+#endif
 namespace TouchInputSimulator
 {
     /// <summary>
     /// Implements the <see cref="IKeyboardSimulator"/> interface by calling the an <see cref="IInputMessageDispatcher"/> to simulate Keyboard gestures.
     /// </summary>
-    public class KeyboardSimulator : IKeyboardSimulator
+    public partial class KeyboardSimulator : IKeyboardSimulator
     {
         private readonly IInputSimulator _inputSimulator;
 
@@ -225,4 +228,108 @@ namespace TouchInputSimulator
             return this;
         }
     }
+
+#if !NET20
+    /// <summary>
+    /// Implements the <see cref="IKeyboardSimulator"/> interface by calling the an <see cref="IInputMessageDispatcher"/> to simulate Keyboard gestures.
+    /// </summary>
+    public partial class KeyboardSimulator : IKeyboardSimulator
+    {
+        public Task<IKeyboardSimulator> KeyDownAsync(VirtualKeyCode keyCode)
+        {
+            return Task.Run(() =>
+             {
+                 return this.KeyDown(keyCode);
+             });
+        }
+
+        public Task<IKeyboardSimulator> KeyPressAsync(VirtualKeyCode keyCode)
+        {
+            return Task.Run(() =>
+            {
+                return this.KeyPress(keyCode);
+            });
+        }
+
+        public Task<IKeyboardSimulator> KeyPressAsync(params VirtualKeyCode[] keyCodes)
+        {
+            return Task.Run(() =>
+            {
+                return this.KeyPress(keyCodes);
+            });
+        }
+
+        public Task<IKeyboardSimulator> KeyUpAsync(VirtualKeyCode keyCode)
+        {
+            return Task.Run(() =>
+            {
+                return this.KeyUp(keyCode);
+            });
+        }
+
+        public Task<IKeyboardSimulator> ModifiedKeyStrokeAsync(IEnumerable<VirtualKeyCode> modifierKeyCodes, IEnumerable<VirtualKeyCode> keyCodes)
+        {
+            return Task.Run(() =>
+            {
+                return this.ModifiedKeyStroke(modifierKeyCodes,keyCodes);
+            });
+        }
+
+        public Task<IKeyboardSimulator> ModifiedKeyStrokeAsync(IEnumerable<VirtualKeyCode> modifierKeyCodes, VirtualKeyCode keyCode)
+        {
+            return Task.Run(() =>
+            {
+                return this.ModifiedKeyStroke(modifierKeyCodes,keyCode);
+            });
+        }
+
+        public Task<IKeyboardSimulator> ModifiedKeyStrokeAsync(VirtualKeyCode modifierKey, IEnumerable<VirtualKeyCode> keyCodes)
+        {
+            return Task.Run(() =>
+            {
+                return this.ModifiedKeyStroke(modifierKey,keyCodes);
+            });
+        }
+
+        public Task<IKeyboardSimulator> ModifiedKeyStrokeAsync(VirtualKeyCode modifierKeyCode, VirtualKeyCode keyCode)
+        {
+            return Task.Run(() =>
+            {
+                return this.ModifiedKeyStroke(modifierKeyCode,keyCode);
+            });
+        }
+
+        public Task<IKeyboardSimulator> TextEntryAsync(string text)
+        {
+            return Task.Run(() =>
+            {
+                return this.TextEntry(text);
+            });
+        }
+
+        public Task<IKeyboardSimulator> TextEntryAsync(char character)
+        {
+            return Task.Run(() =>
+            {
+                return this.TextEntry(character);
+            });
+        }
+
+        public Task<IKeyboardSimulator> SleepAsync(int millsecondsTimeout)
+        {
+            return Task.Run(() =>
+            {
+                return this.Sleep(millsecondsTimeout);
+            });
+        }
+
+        public Task<IKeyboardSimulator> SleepAsync(TimeSpan timeout)
+        {
+            return Task.Run(() =>
+            {
+                return this.Sleep(timeout);
+            });
+        }
+    }
+#endif
 }

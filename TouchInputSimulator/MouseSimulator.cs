@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Threading;
 using TouchInputSimulator.Native;
-
+using static System.Runtime.CompilerServices.RuntimeHelpers;
+#if !NET20
+using System.Threading.Tasks;
+#endif
 namespace TouchInputSimulator
 {
     /// <summary>
     /// Implements the <see cref="IMouseSimulator"/> interface by calling the an <see cref="IInputMessageDispatcher"/> to simulate Mouse gestures.
     /// </summary>
-    public class MouseSimulator : IMouseSimulator
+    public partial class MouseSimulator : IMouseSimulator
     {
         private const int MouseWheelClickSize = 120;
 
@@ -267,4 +270,165 @@ namespace TouchInputSimulator
             return this;
         }
     }
+
+#if !NET20
+    /// <summary>
+    /// Implements the <see cref="IMouseSimulator"/> interface by calling the an <see cref="IInputMessageDispatcher"/> to simulate Mouse gestures.
+    /// </summary>
+    public partial class MouseSimulator : IMouseSimulator
+    {
+        public Task<IMouseSimulator> MoveMouseByAsync(int pixelDeltaX, int pixelDeltaY)
+        {
+            return Task.Run(() =>
+            {
+                return this.MoveMouseBy(pixelDeltaX,pixelDeltaY);
+            });
+        }
+
+        public Task<IMouseSimulator> MoveMouseToAsync(double absoluteX, double absoluteY)
+        {
+            return Task.Run(() =>
+            {
+                return this.MoveMouseTo(absoluteX, absoluteY);
+            });
+        }
+
+        public Task<IMouseSimulator> MoveMouseToPositionOnVirtualDesktopAsync(double absoluteX, double absoluteY)
+        {
+            return Task.Run(() =>
+            {
+                return this.MoveMouseToPositionOnVirtualDesktop(absoluteX, absoluteY);
+            });
+        }
+
+        public Task<IMouseSimulator> LeftButtonDownAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.LeftButtonDown();
+            });
+        }
+
+        public Task<IMouseSimulator> LeftButtonUpAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.LeftButtonUp();
+            });
+        }
+
+        public Task<IMouseSimulator> LeftButtonClickAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.LeftButtonClick();
+            });
+        }
+
+        public Task<IMouseSimulator> LeftButtonDoubleClickAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.LeftButtonDoubleClick();
+            });
+        }
+
+        public Task<IMouseSimulator> RightButtonDownAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.RightButtonDown();
+            });
+        }
+
+        public Task<IMouseSimulator> RightButtonUpAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.RightButtonUp();
+            });
+        }
+
+        public Task<IMouseSimulator> RightButtonClickAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.RightButtonClick();
+            });
+        }
+
+        public Task<IMouseSimulator> RightButtonDoubleClickAsync()
+        {
+            return Task.Run(() =>
+            {
+                return this.RightButtonDoubleClick();
+            });
+        }
+
+        public Task<IMouseSimulator> XButtonDownAsync(int buttonId)
+        {
+            return Task.Run(() =>
+            {
+                return this.XButtonDown(buttonId);
+            });
+        }
+
+        public Task<IMouseSimulator> XButtonUpAsync(int buttonId)
+        {
+            return Task.Run(() =>
+            {
+                return this.XButtonUp(buttonId);
+            });
+        }
+
+        public Task<IMouseSimulator> XButtonClickAsync(int buttonId)
+        {
+            return Task.Run(() =>
+            {
+                return this.XButtonClick(buttonId);
+            });
+        }
+
+        public Task<IMouseSimulator> XButtonDoubleClickAsync(int buttonId)
+        {
+            return Task.Run(() =>
+            {
+                return this.XButtonDoubleClick(buttonId);
+            });
+        }
+
+        public Task<IMouseSimulator> VerticalScrollAsync(int scrollAmountInClicks)
+        {
+            return Task.Run(() =>
+            {
+                return this.VerticalScroll(scrollAmountInClicks);
+            });
+        }
+
+        public Task<IMouseSimulator> HorizontalScrollAsync(int scrollAmountInClicks)
+        {
+            return Task.Run(() =>
+            {
+                return this.HorizontalScroll(scrollAmountInClicks);
+            });
+        }
+
+        public Task<IMouseSimulator> SleepAsync(int millsecondsTimeout)
+        {
+            return Task.Run(() =>
+            {
+                return this.Sleep(millsecondsTimeout);
+            });
+        }
+
+        public Task<IMouseSimulator> SleepAsync(TimeSpan timeout)
+        {
+            return Task.Run(() =>
+            {
+                return this.Sleep(timeout);
+            });
+        }
+    }
+#endif
+
 }
